@@ -8,19 +8,22 @@ class SettingsGitterApi
     private $oauthSecret;
     private $grantType;
     private $responseType;
+    private $domen;
 
     public function __construct(
         $clientId,
         $appUrl,
         $oauthSecret,
         $grantType,
-        $responseType
+        $responseType,
+        $domen
     ) {
         $this->clientId = $clientId;
         $this->appUrl = $appUrl;
         $this->oauthSecret = $oauthSecret;
         $this->grantType = $grantType;
         $this->responseType = $responseType;
+        $this->domen = $domen;
     }
 
     function __get($name)

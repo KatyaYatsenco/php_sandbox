@@ -15,11 +15,12 @@ $gitterClient = new GitterClient(
     'http://php-sandbox.dev/authentication/main.php',
     'f382b4441bd54a6abdbe1f60a65eaf1282ad567f',
     'authorization_code',
-    'code'
+    'code',
+    'https://api.gitter.im'
 );
 
 $gitterClient->authenticate();
-//$gitterClient->getInfo();
+$gitterClient->getInfo();
 $gitterClient->getGroupsList();
 
 

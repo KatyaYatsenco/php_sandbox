@@ -9,6 +9,7 @@ class GitterClient
     private $curlRequest;
     private $storage;
 
+
     /**
      * GitterClient constructor.
      * @param string $clientId
@@ -16,15 +17,24 @@ class GitterClient
      * @param string $oauthSecret
      * @param string $grantType
      * @param string $responseType
+     * @param string $domen
      */
     public function __construct(
         string $clientId,
         string $appUrl,
         string $oauthSecret,
         string $grantType,
-        string $responseType
+        string $responseType,
+        string $domen
     ) {
-        $this->settingsGitterApi = new SettingsGitterApi($clientId, $appUrl, $oauthSecret, $grantType, $responseType);
+        $this->settingsGitterApi = new SettingsGitterApi(
+            $clientId,
+            $appUrl,
+            $oauthSecret,
+            $grantType,
+            $responseType,
+            $domen
+        );
         $this->urlUtils = new UrlUtils();
         $this->curlRequest = new CurlRequests();
         $this->storage = new Storage();
@@ -38,11 +48,13 @@ class GitterClient
         $authentication->renderLink();
     }
 
-    private function token(){
+    private function token()
+    {
         $tokenProvider = new TokenProvider(
             $this->settingsGitterApi, $this->urlUtils, $this->curlRequest, $this->storage
         );
         $token = $tokenProvider->get();
+
         return $token;
     }
 
@@ -50,7 +62,7 @@ class GitterClient
     {
         $token = $this->token();
 
-        $info = new InfoProvider($this->urlUtils, $this->curlRequest);
+        $info = new InfoProvider($this->urlUtils, $this->curlRequest, $this->settingsGitterApi);
 
         if ($token !== null) {
             $getInfo = $info->get($token);
@@ -62,9 +74,11 @@ class GitterClient
 
     public function getGroupsList()
     {
-        $list = new GroupsProvider($this->curlRequest, $this->urlUtils);
+        if (self::token() !== null) {
+            $list = new GroupsProvider($this->curlRequest, $this->urlUtils, $this->settingsGitterApi);
 
-        $list->getList($this->token());
+            $list->getList($this->token());
+        }
     }
 
 }
