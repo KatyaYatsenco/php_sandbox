@@ -1,3 +1,4 @@
+.gitignore
 /.idea
 /functions
 /kata1_php_xml
@@ -6,4 +7,3 @@
 /string_manipulations.php
 /string_manipulations_2.php
 /index.html
-.gitignore
